@@ -8,7 +8,7 @@ const EarlyAccess = () => {
             <header className="w-full md:top-10 top-6 mx-auto absolute z-40">
                 <Container className="flex justify-center items-center">
                     <Link to="/" className="flex items-center">
-                        <img src="/images/common/logo.svg" alt="Swedox" className="h-8" />
+                        <img src="/images/common/logo.svg" alt="VyonixPay" className="h-8" />
                     </Link>
                 </Container>
             </header>

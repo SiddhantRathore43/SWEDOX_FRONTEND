@@ -1,7 +1,7 @@
 export const appConfig = {
-    name: "Swedox",
-    description: "Swedox is a digital lending and payments platform offering credit card bill payment, personal loans, and insurance — all in one place.",
-    url: "https://swedox-backend.onrender.com",
+    name: "VyonixPay",
+    description: "VyonixPay is a digital lending and payments platform offering credit card bill payment, personal loans, and insurance — all in one place.",
+    url: "https://vyonixpay-backend.onrender.com",
     logo: "/images/common/logo.svg",
     favicon: "/favicon.ico",
     ogImage: "/og-image.jpg",

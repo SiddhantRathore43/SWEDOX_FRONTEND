@@ -12,9 +12,9 @@ export default function ProfilePage() {
 
   return (
     <section className="mx-auto max-w-3xl">
-      <p className="text-sm font-bold uppercase text-primary">Swedox account</p>
+      <p className="text-sm font-bold uppercase text-primary">VyonixPay account</p>
       <h1 className="mt-2 text-3xl font-bold">My Profile</h1>
-      <p className="mt-2 text-muted-foreground">Your Swedox account details.</p>
+      <p className="mt-2 text-muted-foreground">Your VyonixPay account details.</p>
 
       <div className="mt-8 rounded-md border bg-background p-6 sm:p-8">
         <div className="flex flex-col items-center gap-6 sm:flex-row">

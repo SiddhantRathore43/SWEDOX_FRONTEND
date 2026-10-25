@@ -11,7 +11,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import About from "./pages/about";
 import Contact from "./pages/contact";
-import { DashboardShell } from "./components/swedox/dashboard-shell";
+import { DashboardShell } from "./components/vyonixpay/dashboard-shell";
 import AdminPage from "./pages/dashboard/admin";
 import BillPaymentPage from "./pages/dashboard/bill-payment";
 import OverviewPage from "./pages/dashboard/overview";

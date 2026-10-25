@@ -17,7 +17,7 @@ const FeatureGrowth = () => {
                     </AnimateOnView>
                     <AnimateOnView blur delay={0.2}>
                         <p className="text-muted-foreground">
-                            Discover the powerful tools that make Swedox the future of finance.
+                            Discover the powerful tools that make VyonixPay the future of finance.
                         </p>
                     </AnimateOnView>
                 </StaggerContainer>

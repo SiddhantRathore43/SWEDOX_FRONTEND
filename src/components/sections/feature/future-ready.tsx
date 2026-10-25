@@ -24,7 +24,7 @@ const FutureReadyFinance = () => {
         {
             icon: <LayoutGrid className="w-5 h-5 text-orange-400" />,
             title: "Connect Everything You Need",
-            description: "Integrate Swedox effortlessly with essential tools and apps to streamline workflows and keep finances."
+            description: "Integrate VyonixPay effortlessly with essential tools and apps to streamline workflows and keep finances."
         }
     ]
 
@@ -39,7 +39,7 @@ const FutureReadyFinance = () => {
                     </AnimateOnView>
                     <AnimateOnView blur delay={0.2}>
                         <p className="text-muted-foreground">
-                            With Swedox, you're not just banking—you're building the future of your finances.
+                            With VyonixPay, you're not just banking—you're building the future of your finances.
                         </p>
                     </AnimateOnView>
                 </StaggerContainer>

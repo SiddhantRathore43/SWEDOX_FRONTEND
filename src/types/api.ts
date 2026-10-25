@@ -101,7 +101,7 @@ export interface PlanOptionResponse {
   currency: string;
   coverageAmount: number;
   description: string;
-  /** The actual underwriting insurer — distinct from Swedox's own integration/aggregator. */
+  /** The actual underwriting insurer — distinct from VyonixPay's own integration/aggregator. */
   insurerName: string;
 }
 
@@ -152,7 +152,7 @@ export interface LoanProductResponse {
   maxAmount: number;
   active: boolean;
   partnerId: number;
-  /** The actual lending partner — Swedox never issues the loan itself. */
+  /** The actual lending partner — VyonixPay never issues the loan itself. */
   partnerName: string;
   partnerCode: string;
 }

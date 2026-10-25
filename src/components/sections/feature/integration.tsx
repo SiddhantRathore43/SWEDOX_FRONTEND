@@ -20,7 +20,7 @@ const FeatureIntegration = () => {
                     </AnimateOnView>
                     <AnimateOnView blur delay={0.2}>
                         <p className="text-muted-foreground">
-                            Link Swedox to your favorite business tools and take charge of your finances
+                            Link VyonixPay to your favorite business tools and take charge of your finances
                         </p>
                     </AnimateOnView>
                 </StaggerContainer>

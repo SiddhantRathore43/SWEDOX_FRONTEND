@@ -30,7 +30,7 @@ const features = [
     {
         id: 4,
         title: "Seamless App & Tool Integrations",
-        description: "Sync Swedox with tools for smoother money management.",
+        description: "Sync VyonixPay with tools for smoother money management.",
         lottieData: feature4,
     }
 ]

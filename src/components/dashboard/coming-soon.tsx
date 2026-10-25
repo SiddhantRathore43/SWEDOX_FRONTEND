@@ -12,7 +12,7 @@ interface ComingSoonProps {
 export function ComingSoon({ service, icon: Icon, description, plural }: ComingSoonProps) {
   return (
     <section className="mx-auto max-w-6xl">
-      <p className="text-sm font-bold uppercase text-primary">Swedox account</p>
+      <p className="text-sm font-bold uppercase text-primary">VyonixPay account</p>
       <h1 className="mt-2 text-3xl font-bold">{service}</h1>
       <p className="mt-2 text-muted-foreground">{description}</p>
 
@@ -26,7 +26,7 @@ export function ComingSoon({ service, icon: Icon, description, plural }: ComingS
         </span>
         <h2 className="mt-4 text-lg font-bold">{service} isn't live yet</h2>
         <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-          We're rolling out Swedox in phases. Right now you can already pay your credit card bill — {service.toLowerCase()} {plural ? "are" : "is"} on the way.
+          We're rolling out VyonixPay in phases. Right now you can already pay your credit card bill — {service.toLowerCase()} {plural ? "are" : "is"} on the way.
         </p>
         <Button asChild className="mt-6">
           <Link to="/dashboard/bill-payment">Pay a Card Bill Instead</Link>

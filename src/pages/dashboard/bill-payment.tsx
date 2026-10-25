@@ -100,6 +100,7 @@ export default function BillPaymentPage() {
 
   const [step, setStep] = useState<Step>("form");
   const [consent, setConsent] = useState(false);
+  const [confirmedBillerName, setConfirmedBillerName] = useState<string>("");
 
   const [payments, setPayments] = useState<BillPaymentResponse[]>([]);
   const [loadingPayments, setLoadingPayments] = useState(true);
@@ -178,6 +179,17 @@ export default function BillPaymentPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // History & Flow Guard: Prevent browser Back from replaying stale transaction or checkout states
+  useEffect(() => {
+    const handlePopState = () => {
+      if (step === "result") {
+        startNewPayment();
+      }
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [step]);
+
   const isCardRefValid = /^\d{4}$/.test(cardRef);
   const selectedBiller = billers.find((b) => String(b.id) === billerId);
 
@@ -222,6 +234,7 @@ export default function BillPaymentPage() {
     }
     submittingRef.current = true;
     setPaying(true);
+    setConfirmedBillerName(selectedBiller?.name ?? "");
     try {
       const res = await apiClient.post<PayBillResponse>(
         "/api/v1/credit-card-bill-payment/pay",
@@ -234,6 +247,17 @@ export default function BillPaymentPage() {
       );
       setPayResult(res.data);
       setStep("result");
+      setConsent(false);
+      // History Guard: Replace current history entry so pressing Back does not navigate back to payment processing
+      if (typeof window !== "undefined" && window.history?.replaceState) {
+        window.history.replaceState({ step: "result" }, "", window.location.pathname);
+      }
+      if (res.data.status === "SUCCESS") {
+        setBillerId("");
+        setCardRef("");
+        setAmount("");
+        setBillInfo(null);
+      }
       toast.success(`Payment ${res.data.status}`);
       await loadPayments(page);
     } catch (error) {
@@ -251,7 +275,11 @@ export default function BillPaymentPage() {
     setBillInfo(null);
     setPayResult(null);
     setConsent(false);
+    setConfirmedBillerName("");
     setStep("form");
+    if (typeof window !== "undefined" && window.history?.replaceState) {
+      window.history.replaceState({ step: "form" }, "", window.location.pathname);
+    }
   };
 
   // Unlike startNewPayment, this keeps biller/card ref/amount filled in —
@@ -261,6 +289,9 @@ export default function BillPaymentPage() {
     setPayResult(null);
     setConsent(false);
     setStep("form");
+    if (typeof window !== "undefined" && window.history?.replaceState) {
+      window.history.replaceState({ step: "form" }, "", window.location.pathname);
+    }
   };
 
   const refreshStatus = async () => {
@@ -343,7 +374,7 @@ export default function BillPaymentPage() {
 
   return (
     <section className="mx-auto max-w-6xl">
-      <p className="text-sm font-bold uppercase text-primary">Swedox account</p>
+      <p className="text-sm font-bold uppercase text-primary">VyonixPay account</p>
       <h1 className="mt-2 text-3xl font-bold">Credit Card Bill Payment</h1>
       <p className="mt-2 text-muted-foreground">Pay your credit card bill in a few seconds.</p>
 
@@ -468,7 +499,7 @@ export default function BillPaymentPage() {
                     className="mt-0.5"
                   />
                   <Label htmlFor="consent" className="text-xs font-normal leading-relaxed text-muted-foreground">
-                    I confirm the details above are correct and authorize Swedox to proceed with this payment on my behalf.
+                    I confirm the details above are correct and authorize VyonixPay to proceed with this payment on my behalf.
                   </Label>
                 </div>
 
@@ -501,10 +532,10 @@ export default function BillPaymentPage() {
                     {payResult.currency} {payResult.billAmount.toLocaleString()}
                   </span>
                 </div>
-                {selectedBiller && (
+                {(confirmedBillerName || selectedBiller?.name) && (
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Biller</span>
-                    <span className="font-medium">{selectedBiller.name}</span>
+                    <span className="font-medium">{confirmedBillerName || selectedBiller?.name}</span>
                   </div>
                 )}
                 {payResult.transactionId != null && (
@@ -877,7 +908,7 @@ export default function BillPaymentPage() {
             <div className="space-y-4">
               {/* Printable receipt — deliberately a light "paper" card regardless
                   of the app's dark theme, since a dark-background printout/PDF
-                  is impractical. Only this block (and its own Swedox header) is
+                  is impractical. Only this block (and its own VyonixPay header) is
                   visible when printed; everything else in the dialog/app carries
                   print:hidden. */}
               <div className="rounded-md border bg-white p-6 text-black">
@@ -885,7 +916,7 @@ export default function BillPaymentPage() {
                   <span className="grid size-8 place-items-center rounded-md bg-black text-white">
                     <Landmark className="size-4" />
                   </span>
-                  <span className="text-lg font-bold">Swedox</span>
+                  <span className="text-lg font-bold">VyonixPay</span>
                   <Badge variant="default" className="ml-auto">
                     {paymentDetail.status}
                   </Badge>

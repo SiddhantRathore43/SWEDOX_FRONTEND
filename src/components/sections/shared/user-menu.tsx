@@ -22,7 +22,7 @@ const UserMenu = () => {
 
   const handleSignOut = async () => {
     await signOut();
-    navigate("/");
+    navigate("/login", { replace: true });
   };
 
   return (

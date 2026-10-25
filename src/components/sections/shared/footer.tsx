@@ -48,7 +48,7 @@ const Footer = () => {
             <Link to="/" className="inline-block">
               <img
                 src="/images/common/logo.svg"
-                alt="SWEDOX"
+                alt="VYONIXPAY"
                 className="h-10 w-auto opacity-70 hover:opacity-100 transition-opacity"
               />
             </Link>
@@ -100,7 +100,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="text-muted-foreground text-sm text-center md:text-left md:max-w-none max-w-xs">
-            © Copyright {new Date().getFullYear()} Swedox. All rights reserved.
+            © Copyright {new Date().getFullYear()} VyonixPay. All rights reserved.
             {" - "}
             <Link to="/legal/terms-&-condition" className="text-white/70 hover:text-white transition-colors">License</Link>
           </p>

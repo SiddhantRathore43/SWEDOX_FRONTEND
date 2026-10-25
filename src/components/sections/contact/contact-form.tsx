@@ -112,7 +112,7 @@ const ContactForm = () => {
                   <span className="font-medium">Email</span>
                 </div>
                 <div className="text-sm text-muted-foreground pt-4">
-                  support@swedox.dev
+                  support@vyonixpay.com
                 </div>
               </div>
 

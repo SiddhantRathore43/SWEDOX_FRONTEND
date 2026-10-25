@@ -9,53 +9,84 @@ export interface AuthUser {
   roles: string[];
 }
 
+export interface AuthResult {
+  error: Error | null;
+  user?: AuthUser | null;
+}
+
 interface AuthContextType {
   user: AuthUser | null;
   loading: boolean;
   isAdmin: boolean;
-  signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string) => Promise<AuthResult>;
+  signIn: (email: string, password: string) => Promise<AuthResult>;
   signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const USER_STORAGE_KEY = "vyonixpay_user";
+
 function toAuthUser(data: AuthResponse): AuthUser {
   setTokens(data.accessToken, data.refreshToken);
-  return { userId: data.userId, email: data.email, roles: data.roles };
+  const authUser: AuthUser = { userId: data.userId, email: data.email, roles: data.roles };
+  if (typeof window !== "undefined") {
+    sessionStorage.setItem(USER_STORAGE_KEY, JSON.stringify(authUser));
+  }
+  return authUser;
 }
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<AuthUser | null>(null);
-  // Tokens are memory-only (never persisted, see tokenStore.ts) — there is
-  // no session-restore call to await on mount, so nothing is ever actually
-  // loading here. Kept as state (rather than removed) so consumers that
-  // check `loading` before redirecting don't need to change.
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    if (typeof window !== "undefined") {
+      const saved = sessionStorage.getItem(USER_STORAGE_KEY);
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return null;
+        }
+      }
+    }
+    return null;
+  });
   const [loading] = useState(false);
 
   useEffect(() => {
     setOnSessionExpired(() => {
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem(USER_STORAGE_KEY);
+        try {
+          sessionStorage.clear();
+          localStorage.clear();
+        } catch {
+          // Ignore
+        }
+      }
+      clearTokens();
       setUser(null);
     });
   }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string): Promise<AuthResult> => {
     try {
       const response = await apiClient.post<AuthResponse>("/api/v1/auth/register", { email, password });
-      setUser(toAuthUser(response.data));
-      return { error: null };
+      const authUser = toAuthUser(response.data);
+      setUser(authUser);
+      return { error: null, user: authUser };
     } catch (err) {
-      return { error: new Error(extractErrorMessage(err)) };
+      return { error: new Error(extractErrorMessage(err)), user: null };
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<AuthResult> => {
     try {
       const response = await apiClient.post<AuthResponse>("/api/v1/auth/login", { email, password });
-      setUser(toAuthUser(response.data));
-      return { error: null };
+      const authUser = toAuthUser(response.data);
+      setUser(authUser);
+      return { error: null, user: authUser };
     } catch (err) {
-      return { error: new Error(extractErrorMessage(err)) };
+      return { error: new Error(extractErrorMessage(err)), user: null };
     }
   };
 
@@ -68,6 +99,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch {
       // Best-effort revoke; the client-side session is cleared regardless.
     } finally {
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem(USER_STORAGE_KEY);
+        try {
+          sessionStorage.clear();
+          localStorage.clear();
+        } catch {
+          // Ignore
+        }
+      }
       clearTokens();
       setUser(null);
     }

@@ -291,7 +291,7 @@ export default function AdminPage() {
 
   return (
     <section className="mx-auto max-w-6xl">
-      <p className="text-sm font-bold uppercase text-primary">Swedox account</p>
+      <p className="text-sm font-bold uppercase text-primary">VyonixPay account</p>
       <h1 className="mt-2 text-3xl font-bold">Admin Dashboard</h1>
       <p className="mt-2 text-muted-foreground">Unified view across every application and transaction.</p>
 

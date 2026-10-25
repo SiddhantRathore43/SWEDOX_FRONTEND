@@ -11,7 +11,7 @@ const EarlyAccessContent = () => {
                         Exciting new features are on the way
                     </h1>
                     <p className="">
-                        Exciting new features are on the way! Swedox is continuously evolving to provide you with the most advanced, secure, and seamless payment solutions.
+                        Exciting new features are on the way! VyonixPay is continuously evolving to provide you with the most advanced, secure, and seamless payment solutions.
                     </p>
                 </div>
                 <AnimateOnView

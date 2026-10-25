@@ -1,10 +1,10 @@
-import { SwedoxBrand } from "@/components/swedox/brand";
+import { VyonixPayBrand } from "@/components/vyonixpay/brand";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/use-auth";
 import { ArrowRight, CheckCircle2, LockKeyhole } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -15,12 +15,22 @@ interface AuthShellProps {
 
 export function AuthShell({ mode }: AuthShellProps) {
   const navigate = useNavigate();
-  const { signIn, signUp } = useAuth();
+  const { user, loading: authLoading, isAdmin, signIn, signUp } = useAuth();
   const isLogin = mode === "login";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Authentication check on mount: If the user/admin is already authenticated,
+  // automatically redirect them to `/dashboard` (or `/dashboard/admin`) with replace: true
+  // so an already logged-in user never sees the login form.
+  useEffect(() => {
+    if (!authLoading && user) {
+      const destination = (user.roles?.includes("ROLE_ADMIN") || isAdmin) ? "/dashboard/admin" : "/dashboard";
+      navigate(destination, { replace: true });
+    }
+  }, [user, authLoading, isAdmin, navigate]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,7 +45,7 @@ export function AuthShell({ mode }: AuthShellProps) {
     }
 
     setLoading(true);
-    const { error } = isLogin ? await signIn(email, password) : await signUp(email, password);
+    const { error, user: authenticatedUser } = isLogin ? await signIn(email, password) : await signUp(email, password);
     setLoading(false);
 
     if (error) {
@@ -44,19 +54,27 @@ export function AuthShell({ mode }: AuthShellProps) {
     }
 
     toast.success(isLogin ? "Welcome back!" : "Account created successfully!");
-    navigate("/dashboard");
+    const destination = (authenticatedUser?.roles?.includes("ROLE_ADMIN") || isAdmin) ? "/dashboard/admin" : "/dashboard";
+    // Using replace: true ensures the login/signup route is removed from the history stack,
+    // so pressing the browser's Back button will NEVER navigate back to the login screen.
+    navigate(destination, { replace: true });
   };
+
+  // If already authenticated, do not flash login form while redirecting
+  if (!authLoading && user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{isLogin ? "Log in" : "Create account"} | Swedox</title>
-        <meta name="description" content={`${isLogin ? "Log in to" : "Create"} your Swedox account.`} />
+        <title>{isLogin ? "Log in" : "Create account"} | VyonixPay</title>
+        <meta name="description" content={`${isLogin ? "Log in to" : "Create"} your VyonixPay account.`} />
       </Helmet>
 
       <header className="border-b bg-background">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-10">
-          <SwedoxBrand />
+          <VyonixPayBrand />
           <Link className="text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground" to={isLogin ? "/signup" : "/login"}>
             {isLogin ? "Create an account" : "Log in"}
           </Link>
@@ -83,7 +101,7 @@ export function AuthShell({ mode }: AuthShellProps) {
 
         <section className="flex items-center justify-center px-5 py-16 sm:px-10">
           <div className="w-full max-w-md">
-            <p className="mb-3 text-sm font-bold uppercase text-primary">{isLogin ? "Welcome back" : "Join Swedox"}</p>
+            <p className="mb-3 text-sm font-bold uppercase text-primary">{isLogin ? "Welcome back" : "Join VyonixPay"}</p>
             <h2 className="text-3xl font-bold">{isLogin ? "Log in to your account" : "Create your account"}</h2>
             <p className="mt-3 text-muted-foreground">{isLogin ? "Enter your details to continue." : "Start managing your finances in one place."}</p>
 
@@ -124,7 +142,7 @@ export function AuthShell({ mode }: AuthShellProps) {
             </form>
 
             <p className="mt-7 text-center text-sm text-muted-foreground">
-              {isLogin ? "New to Swedox?" : "Already have an account?"}{" "}
+              {isLogin ? "New to VyonixPay?" : "Already have an account?"}{" "}
               <Link to={isLogin ? "/signup" : "/login"} className="font-bold text-primary hover:underline">
                 {isLogin ? "Create account" : "Log in"}
               </Link>

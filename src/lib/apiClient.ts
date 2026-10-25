@@ -66,15 +66,68 @@ apiClient.interceptors.response.use(
   }
 );
 
+interface BackendErrorPayload {
+  message?: string;
+  code?: string;
+  errors?: Array<{ field?: string; message?: string }>;
+}
+
+function containsSensitiveLeak(msg: string): boolean {
+  const lower = msg.toLowerCase();
+  return (
+    lower.includes("/api/") ||
+    lower.includes("http://") ||
+    lower.includes("https://") ||
+    lower.includes("exception") ||
+    lower.includes("trace:") ||
+    lower.includes("stacktrace") ||
+    lower.includes("sql") ||
+    lower.includes("org.springframework") ||
+    lower.includes("java.") ||
+    lower.includes("class ") ||
+    lower.includes("column") ||
+    lower.includes("table") ||
+    lower.includes("bad credentials") ||
+    lower.includes("failed to parse")
+  );
+}
+
 export function extractErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
-    const data = error.response?.data as { message?: string } | undefined;
-    if (data?.message) {
-      return data.message;
+    const status = error.response?.status;
+    const data = error.response?.data as BackendErrorPayload | undefined;
+
+    // 1. If backend returned specific validation errors, pick the first user-friendly error if clean
+    if (data?.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+      const firstMsg = data.errors[0]?.message;
+      if (firstMsg && typeof firstMsg === "string" && !containsSensitiveLeak(firstMsg)) {
+        return firstMsg;
+      }
     }
-    if (error.message) {
-      return error.message;
+
+    // 2. If backend provided a custom business message, sanitize and check for sensitive leaks
+    if (data?.message && typeof data.message === "string") {
+      if (!containsSensitiveLeak(data.message)) {
+        return data.message;
+      }
+    }
+
+    // 3. User-friendly fallbacks based on HTTP status codes
+    if (status === 400) return "Invalid request. Please check the provided information.";
+    if (status === 401) return "Invalid username or password. Please verify your credentials.";
+    if (status === 403) return "Access denied. You do not have permission to perform this action.";
+    if (status === 404) return "Requested resource was not found.";
+    if (status === 409) return "This record already exists.";
+    if (status === 429) return "Too many requests. Please wait a moment and try again.";
+    if (status && status >= 500) return "Unable to process request at this time. Please try again.";
+
+    if (error.code === "ECONNABORTED" || error.message?.includes("timeout")) {
+      return "Connection timed out. Please check your internet connection.";
+    }
+    if (error.message?.includes("Network Error")) {
+      return "Unable to reach the server. Please check your network connection.";
     }
   }
-  return "Something went wrong. Please try again.";
+
+  return "Unable to process request at this time. Please try again.";
 }

@@ -127,7 +127,11 @@ export default function InsurancePage() {
         { headers: { "Idempotency-Key": crypto.randomUUID() } }
       );
       setPayResult(res.data);
+      if (typeof window !== "undefined" && window.history?.replaceState) {
+        window.history.replaceState({ step: "result" }, "", window.location.pathname);
+      }
       if (res.data.policyId) {
+        setProposal(null);
         toast.success(`Policy issued: ${res.data.policyNumber}`);
         await loadPolicies();
       } else {
@@ -142,7 +146,7 @@ export default function InsurancePage() {
 
   return (
     <section className="mx-auto max-w-6xl">
-      <p className="text-sm font-bold uppercase text-primary">Swedox account</p>
+      <p className="text-sm font-bold uppercase text-primary">VyonixPay account</p>
       <h1 className="mt-2 text-3xl font-bold">Insurance</h1>
       <p className="mt-2 text-muted-foreground">Get a quote, choose a plan, and manage your policies.</p>
 

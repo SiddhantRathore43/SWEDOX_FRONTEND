@@ -62,7 +62,7 @@ const Navbar = () => {
     <header className="w-full md:top-10 top-6 mx-auto absolute z-40">
       <Container className="flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2 xl:w-[35%] md:w-[30%] w-fit">
-          <img src="/images/common/logo.svg" alt="Swedox" className="h-6" />
+          <img src="/images/common/logo.svg" alt="VyonixPay" className="h-6" />
         </Link>
 
         {/* <!-- Mobile --> */}
@@ -99,7 +99,7 @@ const Navbar = () => {
                 <SheetHeader className="flex flex-row justify-between border-b border-foreground">
                   <SheetTitle className="flex items-center">
                     <Link to="/" className="flex items-center" onClick={() => setIsOpen(false)}>
-                      <img src="/images/common/logo.svg" alt="Swedox" className="h-4" />
+                      <img src="/images/common/logo.svg" alt="VyonixPay" className="h-4" />
                     </Link>
                   </SheetTitle>
                   <div className="flex items-center gap-2">

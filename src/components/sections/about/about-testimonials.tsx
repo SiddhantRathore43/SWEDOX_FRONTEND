@@ -30,7 +30,7 @@ const testimonials = [
     {
         id: 3,
         title: "Simple and Powerful",
-        quote: "I love how clean the interface is. Most financial apps are cluttered and confusing, but Swedox keeps things focused. The early access cards were a huge help for my startup in the early days. Highly recommend to any growing team.",
+        quote: "I love how clean the interface is. Most financial apps are cluttered and confusing, but VyonixPay keeps things focused. The early access cards were a huge help for my startup in the early days. Highly recommend to any growing team.",
         author: "Guy Hawkins",
         role: "Founder at TechFlow",
         avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100",

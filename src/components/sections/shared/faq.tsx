@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const faqs = [
   {
-    question: "What is Swedox?",
+    question: "What is VyonixPay?",
     answer: "Reach, leverages AI-optimized cold email campaigns to elevate your business. We provide tailored strategies that enhance outreach",
   },
   {
@@ -17,11 +17,11 @@ const faqs = [
     answer: "Reach, leverages AI-optimized cold email campaigns to elevate your business. We provide tailored strategies that enhance outreach",
   },
   {
-    question: "Are there any account fees in Swedox?",
-    answer: "No, there are no monthly or annual account fees for using Swedox. We believe in keeping it simple and transparent so you can get more value without hidden costs.",
+    question: "Are there any account fees in VyonixPay?",
+    answer: "No, there are no monthly or annual account fees for using VyonixPay. We believe in keeping it simple and transparent so you can get more value without hidden costs.",
   },
   {
-    question: "Why should I use Swedox?",
+    question: "Why should I use VyonixPay?",
     answer: "Because our built-in AI helps you automate the boring parts of finance (tracking expenses, reminders, insights), so you can focus on what really matters.",
   }
 ];

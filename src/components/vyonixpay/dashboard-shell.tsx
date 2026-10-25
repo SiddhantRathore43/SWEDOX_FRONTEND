@@ -1,4 +1,4 @@
-import { SwedoxBrand } from "@/components/swedox/brand";
+import { VyonixPayBrand } from "@/components/vyonixpay/brand";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
@@ -34,13 +34,14 @@ export function DashboardShell() {
 
   const handleLogout = async () => {
     await signOut();
-    navigate("/");
+    // Navigate with replace: true so the authenticated dashboard is removed from history
+    navigate("/login", { replace: true });
   };
 
   const sidebar = (
     <>
       <div className="flex h-20 items-center justify-between border-b px-4">
-        <SwedoxBrand compact={collapsed} />
+        <VyonixPayBrand compact={collapsed} />
         <Button variant="ghost" size="icon" className="hidden lg:inline-flex" onClick={() => setCollapsed((value) => !value)} aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}>
           {collapsed ? <PanelLeftOpen /> : <PanelLeftClose />}
         </Button>

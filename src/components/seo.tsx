@@ -37,7 +37,7 @@ const SEO = ({
             <meta property="og:url" content={fullUrl} />
             <meta property="og:image" content={fullImageUrl} />
             <meta property="og:image:alt" content={title} />
-            <meta property="og:site_name" content="Swedox - Loans, Insurance & Bill Payments" />
+            <meta property="og:site_name" content="VyonixPay - Loans, Insurance & Bill Payments" />
             <meta property="og:locale" content="en_US" />
 
             {/* Twitter Card Meta Tags */}
@@ -48,7 +48,7 @@ const SEO = ({
             <meta name="twitter:image:alt" content={title} />
 
             {/* Additional Meta Tags */}
-            <meta name="author" content="Swedox" />
+            <meta name="author" content="VyonixPay" />
             <meta name="robots" content="index, follow" />
             <meta name="googlebot" content="index, follow" />
 

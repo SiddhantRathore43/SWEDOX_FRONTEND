@@ -16,7 +16,7 @@ export default function OverviewPage() {
     <section className="mx-auto max-w-6xl">
       <p className="text-sm font-bold uppercase text-primary">Overview</p>
       <h1 className="mt-2 text-3xl font-bold">Welcome back, {displayName}</h1>
-      <p className="mt-2 text-muted-foreground">Here's a clear view of your Swedox account.</p>
+      <p className="mt-2 text-muted-foreground">Here's a clear view of your VyonixPay account.</p>
       <div className="mt-8 grid gap-4 md:grid-cols-3">
         {services.map((service) => (
           <Link key={service.name} to={service.to} className="relative rounded-md border bg-background p-6 transition-colors hover:bg-secondary/40">

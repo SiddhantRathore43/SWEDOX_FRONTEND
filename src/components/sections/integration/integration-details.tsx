@@ -155,7 +155,7 @@ const IntegrationDetails = () => {
                             {data.description}
                         </p>
                         <div className="text-white text-xl font-medium">
-                            {data.name} + Swedox
+                            {data.name} + VyonixPay
                         </div>
                     </AnimateOnView>
                 </div>
